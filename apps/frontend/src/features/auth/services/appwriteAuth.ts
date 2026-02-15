@@ -1,5 +1,5 @@
-import { account } from '../../../services/appwrite/client';
-import { Models } from 'appwrite';
+import { account } from "../../../services/appwrite/client";
+import { Models } from "appwrite";
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -19,11 +19,11 @@ export const login = async (
 ): Promise<ApiResponse<Models.User<Models.Preferences>>> => {
   try {
     // Create email session with Appwrite
-    await account.createEmailPasswordSession(email, password);
-    
+    await account.createEmailPasswordSession({ email, password });
+
     // Get the current user data
     const user = await account.get();
-    
+
     return {
       success: true,
       data: user,
@@ -31,7 +31,7 @@ export const login = async (
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || 'Login failed',
+      error: error.message || "Login failed",
     };
   }
 };
@@ -40,7 +40,9 @@ export const login = async (
  * Get the currently authenticated user
  * @returns API response with user data or null if not authenticated
  */
-export const getCurrentUser = async (): Promise<ApiResponse<Models.User<Models.Preferences> | null>> => {
+export const getCurrentUser = async (): Promise<
+  ApiResponse<Models.User<Models.Preferences> | null>
+> => {
   try {
     const user = await account.get();
     return {
@@ -52,7 +54,7 @@ export const getCurrentUser = async (): Promise<ApiResponse<Models.User<Models.P
     return {
       success: false,
       data: null,
-      error: error.message || 'Not authenticated',
+      error: error.message || "Not authenticated",
     };
   }
 };
@@ -63,14 +65,14 @@ export const getCurrentUser = async (): Promise<ApiResponse<Models.User<Models.P
  */
 export const logout = async (): Promise<ApiResponse<void>> => {
   try {
-    await account.deleteSession('current');
+    await account.deleteSession({ sessionId: "current" });
     return {
       success: true,
     };
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || 'Logout failed',
+      error: error.message || "Logout failed",
     };
   }
 };
@@ -81,7 +83,7 @@ export const logout = async (): Promise<ApiResponse<void>> => {
  */
 export const checkSession = async (): Promise<boolean> => {
   try {
-    await account.getSession('current');
+    await account.getSession({ sessionId: "current" });
     return true;
   } catch {
     return false;

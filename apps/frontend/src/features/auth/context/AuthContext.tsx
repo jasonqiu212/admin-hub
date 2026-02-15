@@ -1,10 +1,10 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
-import { AuthState, LoginCredentials, User } from "../types";
+import { AuthState, LoginCredentials } from "../types";
 import * as appwriteAuth from "../services/appwriteAuth";
 
 interface AuthContextValue extends AuthState {
   loginAction: (credentials: LoginCredentials) => Promise<void>;
-  logout: () => Promise<void>;
+  logoutAction: () => Promise<void>;
 }
 
 const initialState: AuthState = {
@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
       } else {
         setState((prev) => ({ ...prev, isLoading: false }));
-        throw new Error(response.error || 'Login failed');
+        throw new Error(response.error || "Login failed");
       }
     } catch (error) {
       setState((prev) => ({ ...prev, isLoading: false }));
@@ -93,7 +93,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const value: AuthContextValue = {
     ...state,
     loginAction,
-    logout,
+    logoutAction: logout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

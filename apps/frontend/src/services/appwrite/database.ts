@@ -1,5 +1,5 @@
-import { databases } from './client';
-import { ID, Models, Query } from 'appwrite';
+import { databases } from "./client";
+import { ID, Models, Query } from "appwrite";
 
 /**
  * Generic response wrapper for database operations
@@ -23,7 +23,11 @@ export const listDocuments = async <T extends Models.Document>(
   queries: string[] = []
 ): Promise<DatabaseResponse<Models.DocumentList<T>>> => {
   try {
-    const response = await databases.listDocuments<T>(databaseId, collectionId, queries);
+    const response = await databases.listDocuments<T>({
+      databaseId,
+      collectionId,
+      queries,
+    });
     return {
       success: true,
       data: response,
@@ -31,7 +35,7 @@ export const listDocuments = async <T extends Models.Document>(
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || 'Failed to list documents',
+      error: error.message || "Failed to list documents",
     };
   }
 };
@@ -57,7 +61,7 @@ export const getDocument = async <T extends Models.Document>(
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || 'Failed to get document',
+      error: error.message || "Failed to get document",
     };
   }
 };
@@ -90,7 +94,7 @@ export const createDocument = async <T extends Models.Document>(
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || 'Failed to create document',
+      error: error.message || "Failed to create document",
     };
   }
 };
@@ -110,12 +114,7 @@ export const updateDocument = async <T extends Models.Document>(
   data: Partial<Omit<T, keyof Models.Document>>
 ): Promise<DatabaseResponse<T>> => {
   try {
-    const response = await databases.updateDocument<T>(
-      databaseId,
-      collectionId,
-      documentId,
-      data
-    );
+    const response = await databases.updateDocument<T>(databaseId, collectionId, documentId, data);
     return {
       success: true,
       data: response,
@@ -123,7 +122,7 @@ export const updateDocument = async <T extends Models.Document>(
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || 'Failed to update document',
+      error: error.message || "Failed to update document",
     };
   }
 };
@@ -147,7 +146,7 @@ export const deleteDocument = async (
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || 'Failed to delete document',
+      error: error.message || "Failed to delete document",
     };
   }
 };
@@ -155,9 +154,9 @@ export const deleteDocument = async (
 /**
  * Export Query helper for building queries
  * Usage example:
- * 
+ *
  * import { Query } from '@/services/appwrite/database';
- * 
+ *
  * const queries = [
  *   Query.equal('status', 'active'),
  *   Query.limit(10),
@@ -169,19 +168,19 @@ export { Query };
 /**
  * Collection-specific service classes can be added below
  * Example:
- * 
+ *
  * export class PurchaseOrdersService {
  *   private static databaseId = 'your-database-id';
  *   private static collectionId = 'purchase-orders';
- * 
+ *
  *   static async list() {
  *     return listDocuments(this.databaseId, this.collectionId);
  *   }
- * 
+ *
  *   static async getById(id: string) {
  *     return getDocument(this.databaseId, this.collectionId, id);
  *   }
- * 
+ *
  *   // Add more methods as needed
  * }
  */
