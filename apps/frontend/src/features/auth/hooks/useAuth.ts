@@ -18,6 +18,5 @@ export const useAuth = () => {
     isLoading: context.isLoading,
     loginAction: context.loginAction,
     logout: context.logout,
-    refreshAccessToken: context.refreshAccessToken,
   };
 };

@@ -2,18 +2,26 @@ import React from "react";
 import { Dropdown, Avatar, Typography, Button, Flex, Layout } from "antd";
 import { LogoutOutlined, PlusOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { PAGE_TITLES } from "./constants";
 import { blue } from "@ant-design/colors";
+import { useAuth } from "../../features/auth/hooks/useAuth";
 
 const { Title } = Typography;
 
 export const Header: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const getPageTitle = () => {
     const path = location.pathname;
     return PAGE_TITLES[path] || "";
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
   };
 
   const userMenuItems: MenuProps["items"] = [
@@ -21,11 +29,25 @@ export const Header: React.FC = () => {
       key: "logout",
       icon: <LogoutOutlined />,
       label: "Logout",
-      onClick: () => {
-        console.log("logout");
-      },
+      onClick: handleLogout,
     },
   ];
+
+  // Get user's initials for avatar
+  const getUserInitial = () => {
+    if (user?.name) {
+      return user.name.charAt(0).toUpperCase();
+    }
+    if (user?.email) {
+      return user.email.charAt(0).toUpperCase();
+    }
+    return "U";
+  };
+
+  // Get display name
+  const getDisplayName = () => {
+    return user?.name || user?.email || "User";
+  };
 
   return (
     <Layout.Header
@@ -50,9 +72,9 @@ export const Header: React.FC = () => {
         <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" arrow>
           <Flex align="center" gap="small">
             <Avatar size="small" style={{ backgroundColor: blue[6] }}>
-              J
+              {getUserInitial()}
             </Avatar>
-            <Typography.Text>John Doe</Typography.Text>
+            <Typography.Text>{getDisplayName()}</Typography.Text>
           </Flex>
         </Dropdown>
       </Flex>

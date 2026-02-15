@@ -1,12 +1,10 @@
-export interface User {
-  email: string;
-  name: string;
-}
+import { Models } from 'appwrite';
+
+// Use Appwrite's User model
+export type User = Models.User<Models.Preferences>;
 
 export interface AuthState {
   user: User | null;
-  accessToken: string | null;
-  refreshToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
 }
@@ -14,14 +12,4 @@ export interface AuthState {
 export interface LoginCredentials {
   email: string;
   password: string;
-}
-
-export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  user: User;
-}
-
-export interface RefreshTokenResponse {
-  accessToken: string;
 }
