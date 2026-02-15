@@ -1,9 +1,9 @@
 {
-  "name": "admin-hub",
+  "name": "five-star-console",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Admin Hub Monorepo",
+  "description": "Five Star Console Monorepo",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -12,10 +12,10 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:frontend": "pnpm --filter @five-star-auto-leather/admin-hub-frontend dev",
-    "dev:backend": "pnpm --filter @five-star-auto-leather/admin-hub-backend dev",
-    "build:frontend": "pnpm --filter @five-star-auto-leather/admin-hub-frontend build",
-    "build:backend": "pnpm --filter @five-star-auto-leather/admin-hub-backend build",
+    "dev:frontend": "pnpm --filter five-star-console-frontend dev",
+    "dev:backend": "pnpm --filter five-star-console-backend dev",
+    "build:frontend": "pnpm --filter five-star-console-frontend build",
+    "build:backend": "pnpm --filter five-star-console-backend build",
     "build": "pnpm -r build",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
