@@ -65,7 +65,7 @@ export const Header: React.FC = () => {
       </Title>
 
       <Flex align="center" gap="middle">
-        <Button type="primary" icon={<PlusOutlined />}>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => navigate("/new-order")}>
           New Order
         </Button>
 
