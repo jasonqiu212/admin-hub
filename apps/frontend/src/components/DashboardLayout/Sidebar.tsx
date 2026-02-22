@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { Layout, Menu, Typography, Space, Button, Flex } from "antd";
-import {
-  DashboardOutlined,
-  DollarOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-} from "@ant-design/icons";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router";
 import Logo from "../../assets/logo.png";
+import { SIDEBAR_MENU_ITEMS } from "./constants";
 
 const { Sider } = Layout;
 
@@ -15,39 +11,6 @@ export const Sidebar: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const menuItems = [
-    {
-      key: "/",
-      icon: <DashboardOutlined />,
-      label: "Purchase Orders",
-    },
-    // {
-    //   key: "/daily-jobs",
-    //   icon: <ScheduleOutlined />,
-    //   label: "Daily Jobs",
-    // },
-    // {
-    //   key: "/batam-jobs",
-    //   icon: <ShopOutlined />,
-    //   label: "Batam Jobs",
-    // },
-    {
-      key: "/invoices",
-      icon: <DollarOutlined />,
-      label: "Invoices",
-      children: [
-        {
-          key: "/five-star-auto-leather-invoices",
-          label: "Five Star Auto Leather",
-        },
-        {
-          key: "/leather-and-stitch-invoices",
-          label: "Leather & Stitch",
-        },
-      ],
-    },
-  ];
 
   const handleMenuClick = ({ key }: { key: string }) => {
     navigate(key);
@@ -83,11 +46,11 @@ export const Sidebar: React.FC = () => {
           <Menu
             mode="inline"
             selectedKeys={[location.pathname]}
-            items={menuItems}
+            items={SIDEBAR_MENU_ITEMS}
             onClick={handleMenuClick}
             style={{ border: 0 }}
             inlineCollapsed={collapsed}
-            defaultOpenKeys={menuItems.map((item) => item.key)}
+            defaultOpenKeys={SIDEBAR_MENU_ITEMS.map((item) => item?.key as string)}
           />
         </div>
 

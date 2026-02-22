@@ -1,15 +1,21 @@
 import React from "react";
 import { Dropdown, Avatar, Typography, Button, Flex, Layout } from "antd";
-import { LogoutOutlined, PlusOutlined } from "@ant-design/icons";
+import { LogoutOutlined, MenuOutlined, PlusOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { useLocation, useNavigate } from "react-router";
 import { PAGE_TITLES } from "./constants";
 import { blue } from "@ant-design/colors";
 import { useAuth } from "../../features/auth/hooks/useAuth";
+import Logo from "../../assets/logo.png";
 
 const { Title } = Typography;
 
-export const Header: React.FC = () => {
+export interface HeaderProps {
+  isMobile: boolean;
+  onMobileMenuToggle?: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ isMobile, onMobileMenuToggle }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -33,7 +39,6 @@ export const Header: React.FC = () => {
     },
   ];
 
-  // Get user's initials for avatar
   const getUserInitial = () => {
     if (user?.name) {
       return user.name.charAt(0).toUpperCase();
@@ -44,7 +49,6 @@ export const Header: React.FC = () => {
     return "U";
   };
 
-  // Get display name
   const getDisplayName = () => {
     return user?.name || user?.email || "User";
   };
@@ -52,17 +56,38 @@ export const Header: React.FC = () => {
   return (
     <Layout.Header
       style={{
-        background: "#fafafa",
+        background: isMobile ? "#f6f6f6" : "#fafafa",
         padding: "16px 12px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         height: 64,
+        ...(isMobile && { borderBottom: "1px solid #f0f0f0" }),
       }}
     >
-      <Title level={1} style={{ margin: 0, fontSize: 22 }}>
-        {getPageTitle()}
-      </Title>
+      <Flex align="center" gap="middle">
+        {isMobile ? (
+          <>
+            <Button
+              type="text"
+              icon={<MenuOutlined />}
+              onClick={onMobileMenuToggle}
+              aria-label="Open menu"
+            />
+            <img
+              src={Logo}
+              alt="Five Star Console"
+              height={32}
+              style={{ display: "block", cursor: "pointer" }}
+              onClick={() => navigate("/")}
+            />
+          </>
+        ) : (
+          <Title level={1} style={{ margin: 0, fontSize: 22 }}>
+            {getPageTitle()}
+          </Title>
+        )}
+      </Flex>
 
       <Flex align="center" gap="middle">
         <Button type="primary" icon={<PlusOutlined />} onClick={() => navigate("/new-order")}>
@@ -71,10 +96,10 @@ export const Header: React.FC = () => {
 
         <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" arrow>
           <Flex align="center" gap="small">
-            <Avatar size="small" style={{ backgroundColor: blue[6] }}>
+            <Avatar style={{ backgroundColor: blue[6], cursor: "pointer" }}>
               {getUserInitial()}
             </Avatar>
-            <Typography.Text>{getDisplayName()}</Typography.Text>
+            {!isMobile && <Typography.Text>{getDisplayName()}</Typography.Text>}
           </Flex>
         </Dropdown>
       </Flex>
