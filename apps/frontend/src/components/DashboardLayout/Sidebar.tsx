@@ -87,6 +87,7 @@ export const Sidebar: React.FC = () => {
             onClick={handleMenuClick}
             style={{ border: 0 }}
             inlineCollapsed={collapsed}
+            defaultOpenKeys={menuItems.map((item) => item.key)}
           />
         </div>
 
